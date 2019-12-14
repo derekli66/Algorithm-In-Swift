@@ -2,6 +2,16 @@ import XCTest
 @testable import DEQUE
 
 final class DEQUETests: XCTestCase {
+   func testInsertBack() {
+        var deque = Deque<Int>()
+        deque.insertBack(100)
+        deque.insertBack(200)
+        deque.insertBack(300)
+        deque.insertBack(400)
+        XCTAssert(deque.first! == 100)
+        XCTAssert(deque.last! == 400)
+    }
+
     func testListNodeCopy() {
         let node1 = ListNode(10)
         let node2 = ListNode(20)
@@ -43,16 +53,6 @@ final class DEQUETests: XCTestCase {
         deque.insertFront(100)
         XCTAssert(deque.first! == 100)
         XCTAssert(deque.last! == 100)
-    }
-
-    func testInsertBack() {
-        var deque = Deque<Int>()
-        deque.insertBack(100)
-        deque.insertBack(200)
-        deque.insertBack(300)
-        deque.insertBack(400)
-        XCTAssert(deque.first! == 100)
-        XCTAssert(deque.last! == 400)
     }
 
     func testPopBack() {
@@ -130,8 +130,6 @@ final class DEQUETests: XCTestCase {
         XCTAssert(deque5.first! == 100)
         XCTAssert(deque5.last! == 100)
         deque5.popBack()
-        print("[Debug] Check deque5.last \(deque5.last)")
-        print("[Debug] Check deque5.first \(deque5.first)")
         XCTAssert(deque5.last == nil)
         XCTAssert(deque5.first == nil)
 
@@ -149,10 +147,10 @@ final class DEQUETests: XCTestCase {
         ("testListNodeCopy", testListNodeCopy),
         ("testInsertFirstValueAtBack", testInsertFirstValueAtBack),
         ("testInsertFirstValueAtFront", testInsertFirstValueAtFront),
-        ("testInsertBack", testInsertBack),
         ("testInsertFront", testInsertFront),
         ("testPopBack", testPopBack),
         ("testPopFront", testPopFront),
-        ("testStructUnique", testStructUnique)
+        ("testStructUnique", testStructUnique),
+        ("testInsertBack", testInsertBack)
     ]
 }

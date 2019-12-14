@@ -3,7 +3,12 @@ import Foundation
 final class ListNode<T> {
     var val: T
     var next: ListNode<T>?
-    var parent: ListNode<T>?
+    weak var parent: ListNode<T>?
+
+    deinit {
+        // debugPrint("[Debug] val \(val) got dealloc.")
+    }
+
     init(_ value: T) {
         val = value
     }
@@ -16,13 +21,6 @@ final class ListNode<T> {
         return newNode
     }
 }
-
-/*
-    TODO: The pop functions did not have correct pop implementation.
-          The move impl on head and tail did not care about the null end set up.
-          Should also consider the unique reference case when popping head and tail.
-    TODO: The usage of copy() should copy head and tail at the same time. 
-*/
 
 public struct Deque<T> {
     typealias Node = ListNode<T>
@@ -37,6 +35,19 @@ public struct Deque<T> {
         return tail?.val
     }
 
+    private mutating func copyAndReplaceLinkedList() {
+        guard let headNode = head else { return }
+
+        let newHeadNode = headNode.copy()
+        var currentNode = newHeadNode
+        while nil != currentNode.next {
+            currentNode = currentNode.next!
+        }
+
+        tail = currentNode
+        head = newHeadNode
+    }
+
     mutating func insertBack(_ val: T) {
         assert(!((nil == head) ^ (nil == tail)), "The head node and tail node must be both null or both unnull")
 
@@ -45,15 +56,10 @@ public struct Deque<T> {
             tail = newNode
             head = tail
         } else {
-            if !isKnownUniquelyReferenced(&tail) {
-                let tailCopy = tail?.copy()
-
-                if head! === tail! {
-                    tail = tailCopy
-                    head = tail
-                } else {
-                    tail = tailCopy
-                }
+            if !isKnownUniquelyReferenced(&head) {
+                debugPrint("[Debug] copy and replace was performed.")
+                copyAndReplaceLinkedList()
+                debugPrint("[Debug] copy and replace was finished.")
             }
 
             tail?.next = newNode
@@ -66,12 +72,19 @@ public struct Deque<T> {
     mutating func popBack() -> T? {
         assert(!((nil == head) ^ (nil == tail)), "The head node and tail node must be both null or both unnull")
 
+        if !isKnownUniquelyReferenced(&head) {
+            debugPrint("[Debug] copy and replace was performed.")
+            copyAndReplaceLinkedList()
+            debugPrint("[Debug] copy and replace was finished.")
+        }
+
         let deleted = tail
         if deleted! === head! {
             head = nil
             tail = nil
         } else {
             tail = tail?.parent
+            tail?.next = nil
         }
 
         return deleted?.val
@@ -86,19 +99,9 @@ public struct Deque<T> {
             tail = head
         } else {
             if !isKnownUniquelyReferenced(&head) {
-                if head! === tail! {
-                    let headCopy = head?.copy()
-                    head = headCopy
-                    tail = head
-                } 
-                else {
-                    let next = head?.next
-                    // To prevent copy all linked nodes, set head's next node to nil,
-                    // the connect next node after copying
-                    head?.next = nil
-                    head = head?.copy()
-                    head?.next = next
-                }
+                debugPrint("[Debug] copy and replace was performed.")
+                copyAndReplaceLinkedList()
+                debugPrint("[Debug] copy and replace was finished.")
             }
 
             let temp = head
@@ -112,14 +115,22 @@ public struct Deque<T> {
     mutating func popFront() -> T? {
         assert(!((nil == head) ^ (nil == tail)), "The head node and tail node must be both null or both unnull")
 
+        if !isKnownUniquelyReferenced(&head) {
+            debugPrint("[Debug] copy and replace was performed.")
+            copyAndReplaceLinkedList()
+            debugPrint("[Debug] copy and replace was finished.")
+        }
+
         let deleted = head
         if deleted! === tail! {
             head = nil
             tail = nil
         } else {
             head = head?.next
+            head?.parent = nil
         }
 
+        deleted?.next = nil
         return deleted?.val
     }
 }
