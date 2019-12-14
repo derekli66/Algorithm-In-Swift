@@ -20,11 +20,8 @@ let package = Package(
         // A target can define a module or a test suite.
         // Targets can depend on other targets in this package, 
         // and on products in packages which this package depends on.
-        .target(
-            name: "DEQUE",
-            dependencies: []),
-        .testTarget(
-            name: "DEQUETests",
-            dependencies: ["DEQUE"])
+        .target(name: "DEQUE", dependencies: []),
+        .target(name: "STACK", dependencies: ["DEQUE"]),
+        .testTarget(name: "DEQUETests", dependencies: ["DEQUE"])
     ]
 )

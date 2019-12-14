@@ -35,6 +35,8 @@ public struct Deque<T> {
         return tail?.val
     }
 
+    public init() {}
+
     private mutating func copyAndReplaceLinkedList() {
         guard let headNode = head else { return }
 
@@ -48,7 +50,7 @@ public struct Deque<T> {
         head = newHeadNode
     }
 
-    mutating func insertBack(_ val: T) {
+    public mutating func insertBack(_ val: T) {
         assert(!((nil == head) ^ (nil == tail)), "The head node and tail node must be both null or both unnull")
 
         let newNode = Node(val)
@@ -57,9 +59,7 @@ public struct Deque<T> {
             head = tail
         } else {
             if !isKnownUniquelyReferenced(&head) {
-                debugPrint("[Debug] copy and replace was performed.")
                 copyAndReplaceLinkedList()
-                debugPrint("[Debug] copy and replace was finished.")
             }
 
             tail?.next = newNode
@@ -69,13 +69,11 @@ public struct Deque<T> {
     }
 
     @discardableResult
-    mutating func popBack() -> T? {
+    public mutating func popBack() -> T? {
         assert(!((nil == head) ^ (nil == tail)), "The head node and tail node must be both null or both unnull")
 
         if !isKnownUniquelyReferenced(&head) {
-            debugPrint("[Debug] copy and replace was performed.")
             copyAndReplaceLinkedList()
-            debugPrint("[Debug] copy and replace was finished.")
         }
 
         let deleted = tail
@@ -90,7 +88,7 @@ public struct Deque<T> {
         return deleted?.val
     }
 
-    mutating func insertFront(_ val: T) {
+    public mutating func insertFront(_ val: T) {
         assert(!((nil == head) ^ (nil == tail)), "The head node and tail node must be both null or both unnull")
 
         let newNode = Node(val)
@@ -99,9 +97,7 @@ public struct Deque<T> {
             tail = head
         } else {
             if !isKnownUniquelyReferenced(&head) {
-                debugPrint("[Debug] copy and replace was performed.")
                 copyAndReplaceLinkedList()
-                debugPrint("[Debug] copy and replace was finished.")
             }
 
             let temp = head
@@ -112,13 +108,11 @@ public struct Deque<T> {
     }
 
     @discardableResult
-    mutating func popFront() -> T? {
+    public mutating func popFront() -> T? {
         assert(!((nil == head) ^ (nil == tail)), "The head node and tail node must be both null or both unnull")
 
         if !isKnownUniquelyReferenced(&head) {
-            debugPrint("[Debug] copy and replace was performed.")
             copyAndReplaceLinkedList()
-            debugPrint("[Debug] copy and replace was finished.")
         }
 
         let deleted = head
