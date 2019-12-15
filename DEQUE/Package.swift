@@ -22,6 +22,6 @@ let package = Package(
         // and on products in packages which this package depends on.
         .target(name: "DEQUE", dependencies: []),
         .target(name: "STACK", dependencies: ["DEQUE"]),
-        .testTarget(name: "DEQUETests", dependencies: ["DEQUE"])
+        .testTarget(name: "DEQUETests", dependencies: ["DEQUE", "STACK"])
     ]
 )

@@ -27,11 +27,11 @@ public struct Deque<T> {
     private var head: Node?
     private var tail: Node?
 
-    var first: T? {
+    public var first: T? {
         return head?.val
     }
 
-    var last: T? {
+    public var last: T? {
         return tail?.val
     }
 
