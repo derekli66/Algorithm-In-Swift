@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug tests on macOS",
+      "type": "lldb",
+      "request": "launch",
+      "program": "/Applications/Xcode_11.2.1.app/Contents/Developer/usr/bin/xctest", //For example /Applications/Xcode.app/Contents/Developer/usr/bin/xctest
+      "args": ["${workspaceFolder}/.build/debug/DFSPackageTests.xctest"],
+      "preLaunchTask": "swift-build-tests"
+    }
+  ]
+}
