@@ -1,15 +1,14 @@
 class Solution {
-    private func findLognestLengthFromCenter(_ s: String, lptr: Int, rptr:Int) -> Int {
-        if s.count == 0 { return 0 }
+    private func findLognestLengthFromCenter(_ chars: [Character], lptr: Int, rptr:Int) -> Int {
+        if chars.count == 0 { return 0 }
         if lptr > rptr { return 0 }
         
-        let characters = Array(s)
         var left = lptr
         var right = rptr
         
         var start = 0
         var end = 0
-        while left >= 0 && right < characters.count && characters[left] == characters[right] {
+        while left >= 0 && right < chars.count && chars[left] == chars[right] {
             start = left
             end = right
             left -= 1
@@ -20,13 +19,17 @@ class Solution {
     }
     
     func longestPalindrome(_ s: String) -> String {
-        
+        if s.count < 2 {
+            return s
+        }
+                
+        let chars = Array(s)
         var start = 0
         var end = 0
         
-        for idx in 0..<s.count {
-            let len1 = findLognestLengthFromCenter(s, lptr: idx, rptr: idx)
-            let len2 = findLognestLengthFromCenter(s, lptr: idx, rptr: idx + 1)
+        for idx in 0..<s.count - 1 {
+            let len1 = findLognestLengthFromCenter(chars, lptr: idx, rptr: idx)
+            let len2 = findLognestLengthFromCenter(chars, lptr: idx, rptr: idx + 1)
             let maxLen = max(len1, len2)
             
             if maxLen > end - start + 1 {
@@ -41,8 +44,6 @@ class Solution {
             }
         }
         
-        let startIndex = s.index(s.startIndex, offsetBy: start)
-        let endIndex = s.index(s.startIndex, offsetBy: end + 1)
-        return String(s[startIndex..<endIndex])
+        return String(chars[start..<end+1])
     }
 }
