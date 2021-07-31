@@ -19,4 +19,31 @@
             print("[DEBUG] the way \(theWay)")
             XCTAssert(theWay == 4)
         }
+        
+        func testSolution2() {
+            /**
+             Input: amount = 3, coins = [2]
+             Output: 0
+             Explanation: the amount of 3 cannot be made up just with coins of 2.
+             */
+            let amount = 3
+            let coins = [2]
+            
+            let theWay = Solution().change(amount, coins)
+            print("[DEBUG] the way \(theWay)")
+            XCTAssert(theWay == 0)
+        }
+        
+        func testSolution3() {
+            /**
+             Input: amount = 10, coins = [10]
+             Output: 1
+             */
+            let amount = 10
+            let coins = [10]
+            
+            let theWay = Solution().change(amount, coins)
+            print("[DEBUG] the way \(theWay)")
+            XCTAssert(theWay == 1)
+        }
     }
