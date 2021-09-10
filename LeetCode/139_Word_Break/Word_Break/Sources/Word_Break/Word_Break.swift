@@ -1,7 +1,17 @@
 class Solution {
+//    func wordBreak(_ s: String, _ wordDict: [String]) -> Bool {
+//        let chars = Array(s)
+//        return wordBreak(chars, wordDict)
+//    }
+    
     func wordBreak(_ s: String, _ wordDict: [String]) -> Bool {
-        let chars = Array(s)
-        return wordBreak(chars, wordDict)
+        var wordHashMap = [String:Int]()
+        
+        for str in wordDict {
+            wordHashMap[str] = 1
+        }
+        
+        return wordBreaker(s, wordHashMap)
     }
     
     private func wordBreak(_ characters: [Character], _ wordDict: [String]) -> Bool {
@@ -20,5 +30,25 @@ class Solution {
         }
         
         return result
+    }
+    
+    private func wordBreaker(_ s: String, _ wordDict: [String:Int]) -> Bool {
+        if s.count == 0 { return false }
+        if wordDict[s] != nil { return true }
+        
+        for idx in 0..<s.count {
+            let firstIndex = s.startIndex
+            let currentIndex = s.index(s.startIndex, offsetBy: idx)
+            let subArray = s[firstIndex..<currentIndex]
+            let str = String(subArray)
+            
+            if wordDict[str] != nil {
+                let remaining = s[currentIndex..<s.endIndex]
+                let didContained = wordBreaker(String(remaining), wordDict)
+                if true == didContained { return true }
+            }
+        }
+        
+        return false
     }
 }
